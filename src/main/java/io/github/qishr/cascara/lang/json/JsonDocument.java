@@ -18,7 +18,7 @@ public class JsonDocument extends JsonNode implements StructuredDocument {
     private URI schemaUri = null;
 
     public JsonDocument(JsonNode root) {
-        super(root.getStartLine(), root.getStartColumn(), root.getUri());
+        super(root.getStartLine(), root.getStartColumn(), root.getOriginUri());
         this.root = root;
     }
 
@@ -29,28 +29,16 @@ public class JsonDocument extends JsonNode implements StructuredDocument {
     // StructuredDocument Implementation
     //
 
-    @Override public Optional<URI> getSchemaUri() {
-        if (schemaUri == null) {
-            return Optional.empty();
-        } else {
-            return Optional.of(schemaUri);
-        }
+    @Override public URI getSchemaUri() {
+        return schemaUri;
     }
 
     /// Returns the primary content node of the document.
     @Override public JsonNode getRoot() { return root; }
 
-    // @Override
-    // public List<JsonCommentNode> getComments() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getComments'");
-    // }
-
     //
     // Convenience Methods
     //
-
-
 
     @Nullable
     public JsonNode get(String key) {
@@ -59,25 +47,4 @@ public class JsonDocument extends JsonNode implements StructuredDocument {
         }
         return null;
     }
-
-    // public JsonMapNode getMap(String key) {
-    //     if (root instanceof JsonMapNode map) {
-    //         return map.getMap(key);
-    //     }
-    //     return new JsonMapNode();
-    // }
-
-    // public JsonSequenceNode getSequence(String key) {
-    //     if (root instanceof JsonMapNode map) {
-    //         return map.getSequence(key);
-    //     }
-    //     return new JsonSequenceNode();
-    // }
-
-    // public String getString(String key) {
-    //     if (root instanceof JsonMapNode map) {
-    //         return map.getString(key);
-    //     }
-    //     return null;
-    // }
 }

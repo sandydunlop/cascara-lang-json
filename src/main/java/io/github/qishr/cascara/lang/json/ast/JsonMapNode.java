@@ -68,7 +68,7 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
                 return;
             }
         }
-        entries.add(new JsonMapEntryNode(key.getStartLine(), key.getStartColumn(), getUri(), key, value));
+        entries.add(new JsonMapEntryNode(key.getStartLine(), key.getStartColumn(), getOriginUri(), key, value));
     }
 
     @Override
@@ -119,8 +119,8 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
                 return;
             }
         }
-        JsonScalarNode keyNode = new JsonScalarNode(0, 0, getUri(), key, key, QuoteStyle.DOUBLE);
-        entries.add(new JsonMapEntryNode(0, 0, getUri(), keyNode, value));
+        JsonScalarNode keyNode = new JsonScalarNode(0, 0, getOriginUri(), key, key, QuoteStyle.DOUBLE);
+        entries.add(new JsonMapEntryNode(0, 0, getOriginUri(), keyNode, value));
     }
 
     public boolean containsKey(String key) {

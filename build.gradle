@@ -6,7 +6,6 @@ plugins {
 	id 'maven-publish'
 }
 
-group = 'io.github.qishr'
 
 repositories {
     mavenLocal()

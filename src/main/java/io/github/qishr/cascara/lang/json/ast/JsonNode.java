@@ -12,19 +12,19 @@ public abstract class JsonNode implements AstNode {
     private final int startColumn;
     private int endLine = 0;
     private int endColumn = 0;
-    private final URI uri;
+    private final URI originUri;
     private final List<CommentAstNode> comments = new ArrayList<>();
 
     protected JsonNode() {
         this.startLine = 1;
         this.startColumn = 1;
-        this.uri = null;
+        this.originUri = null;
     }
 
     protected JsonNode(int line, int column, URI uri) {
         this.startLine = line;
         this.startColumn = column;
-        this.uri = uri;
+        this.originUri = uri;
     }
 
     @Override public abstract List<? extends JsonNode> getChildren();
@@ -32,7 +32,7 @@ public abstract class JsonNode implements AstNode {
     @Override public int getStartColumn() { return startColumn; }
     @Override public int getEndLine() { return endLine; }
     @Override public int getEndColumn() { return endColumn; }
-    @Override public URI getUri() { return uri; }
+    @Override public URI getOriginUri() { return originUri; }
     @Override public List<CommentAstNode> getComments() { return comments; }
 
     public void addComment(CommentAstNode comment) {
