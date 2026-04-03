@@ -2,16 +2,11 @@ package io.github.qishr.cascara.lang.json;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import io.github.qishr.cascara.common.lang.StructuredDocument;
 import io.github.qishr.cascara.common.lang.annotation.Nullable;
-import io.github.qishr.cascara.common.lang.ast.CommentAstNode;
-import io.github.qishr.cascara.lang.json.ast.JsonCommentNode;
 import io.github.qishr.cascara.lang.json.ast.JsonMapNode;
 import io.github.qishr.cascara.lang.json.ast.JsonNode;
-import io.github.qishr.cascara.lang.json.ast.JsonScalarNode;
-import io.github.qishr.cascara.lang.json.ast.JsonSequenceNode;
 
 public class JsonDocument extends JsonNode implements StructuredDocument {
     private final JsonNode root;

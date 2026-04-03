@@ -16,7 +16,7 @@ import io.github.qishr.cascara.lang.json.token.JsonTokenType;
 
 /// A recursive descent parser for JSON/JSON5 following the high-fidelity
 /// patterns established in [YamlParser].
-public class JsonParser implements Parser<JsonDocument> {
+public class JsonParser implements Parser<JsonDocument, JsonToken> {
     private URI uri;
     private List<JsonToken> tokens;
     private int current = 0;
@@ -47,12 +47,21 @@ public class JsonParser implements Parser<JsonDocument> {
 
     @Override
     public JsonDocument parse(String text, URI uri) {
-        this.uri = uri;
         JsonTokenizer tokenizer = new JsonTokenizer();
         tokenizer.setReporter(this.reporter);
-        this.tokens = tokenizer.tokenize(text, uri);
-        this.current = 0;
+        return parse(tokenizer.tokenize(text, uri), uri);
+    }
 
+    @Override
+    public JsonDocument parse(List<JsonToken> tokens) {
+        return parse(tokens, null);
+    }
+
+    @Override
+    public JsonDocument parse(List<JsonToken> tokens, URI uri) {
+        this.tokens = tokens;
+        this.uri = uri;
+        this.current = 0;
         return parseDocument();
     }
 
@@ -120,6 +129,7 @@ public class JsonParser implements Parser<JsonDocument> {
                             keyTok.getStartLine(), keyTok.getStartColumn(), uri,
                             keyTok.getLexeme(), (String) keyTok.getValue(), style
                         );
+                    key.setToken(keyTok);
 
                     // The key claims EVERYTHING in the buffer since the last key's value was finished
                     attachComments(key);

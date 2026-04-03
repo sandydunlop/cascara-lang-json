@@ -1,4 +1,4 @@
-package io.github.qishr.cascara.lang.json;
+package io.github.qishr.cascara.lang.json.exception;
 
 import java.net.URI;
 

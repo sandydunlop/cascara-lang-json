@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import io.github.qishr.cascara.common.lang.annotation.Nullable;
 import io.github.qishr.cascara.common.lang.ast.MapAstNode;
 import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
-import io.github.qishr.cascara.common.lang.ast.SequenceAstNode;
 
 public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMapEntryNode> {
     private final List<JsonMapEntryNode> entries = new ArrayList<>();

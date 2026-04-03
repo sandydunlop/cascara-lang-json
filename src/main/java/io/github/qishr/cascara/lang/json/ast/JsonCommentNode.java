@@ -1,6 +1,5 @@
 package io.github.qishr.cascara.lang.json.ast;
 
-import io.github.qishr.cascara.common.lang.ast.AstNode;
 import io.github.qishr.cascara.common.lang.ast.CommentAstNode;
 import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
 import io.github.qishr.cascara.common.lang.ast.ScalarAstNode;

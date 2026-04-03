@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import io.github.qishr.cascara.common.lang.ast.SequenceAstNode;
-import java.util.Iterator;
 
 public class JsonSequenceNode extends JsonNode implements SequenceAstNode<JsonNode> {
     private final List<JsonNode> items = new ArrayList<>();

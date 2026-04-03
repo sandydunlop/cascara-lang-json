@@ -31,7 +31,7 @@ public class JsonConverter implements AstConverter<JsonNode> {
                 if (entry instanceof MapEntryAstNode astMapEntry) {
                     AstNode astKey = astMapEntry.getKey();
                     AstNode astValue = astMapEntry.getValue();
-                    if (astKey instanceof ScalarAstNode astScalarKey) {
+                    if (astKey instanceof ScalarAstNode) {
                         if (fromAst(astKey) instanceof JsonScalarNode jsonKey) {
                             JsonNode yamlValue = fromAst(astValue);
                             map.put(jsonKey, yamlValue);
