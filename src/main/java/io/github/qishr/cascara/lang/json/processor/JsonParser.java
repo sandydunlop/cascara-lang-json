@@ -14,14 +14,13 @@ import io.github.qishr.cascara.lang.json.ast.*;
 import io.github.qishr.cascara.lang.json.token.JsonToken;
 import io.github.qishr.cascara.lang.json.token.JsonTokenType;
 
-/// A recursive descent parser for JSON/JSON5 following the high-fidelity
-/// patterns established in [YamlParser].
+/// A recursive descent parser for JSON/JSON5.
 public class JsonParser implements Parser<JsonDocument, JsonToken> {
     private URI uri;
     private List<JsonToken> tokens;
     private int current = 0;
     private Reporter reporter;
-    private JsonOptions options = new JsonOptions(); // Default options restored
+    private JsonOptions options = new JsonOptions();
     private int depth = 0;
 
     /// Buffer to hold comments until a data node is created to claim them.

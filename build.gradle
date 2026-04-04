@@ -1,7 +1,6 @@
 plugins {
     id 'java-library'
     id 'jacoco'
-    id("org.gradlex.extra-java-module-info") version "1.13.1"
     id 'signing'
 	id 'maven-publish'
 }
@@ -23,19 +22,18 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:5.18.0'
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
 
-    implementation "io.github.qishr:cascara-common:0.1.0"
+    implementation "io.github.qishr:cascara-common:0.1.1"
 }
 
-extraJavaModuleInfo {
-    failOnMissingModuleInfo = false
-    // failOnAutomaticModules = true
-}
 
 java {
+    withJavadocJar()
+    withSourcesJar()
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
 }
+
 
 tasks.register('runtimeModulePath', Copy) {
     dependsOn tasks.named('jar')
