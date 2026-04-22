@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.qishr.cascara.common.content.ContentType;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.lang.LanguageOptions;
 import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
@@ -16,6 +17,12 @@ import io.github.qishr.cascara.lang.json.token.JsonTokenType;
 
 /// A recursive descent parser for JSON/JSON5.
 public class JsonParser implements Parser<JsonDocument, JsonToken> {
+    static final ContentType contentType = new ContentType("JSON")
+            .withMimeType("text/json")
+            .withMimeType("application/json")
+            .withMimeType("application/json+schema")
+            .withSuffix(".json");
+
     private URI uri;
     private List<JsonToken> tokens;
     private int current = 0;
@@ -25,6 +32,11 @@ public class JsonParser implements Parser<JsonDocument, JsonToken> {
 
     /// Buffer to hold comments until a data node is created to claim them.
     private final List<JsonCommentNode> pendingComments = new ArrayList<>();
+
+    @Override
+    public ContentType getContentType() {
+        return contentType;
+    }
 
     @Override
     public JsonParser setReporter(Reporter reporter) {

@@ -1,5 +1,6 @@
 package io.github.qishr.cascara.lang.json.processor;
 
+import io.github.qishr.cascara.common.content.ContentType;
 import io.github.qishr.cascara.common.lang.StructuredDocument;
 import io.github.qishr.cascara.common.lang.ast.AstNode;
 import io.github.qishr.cascara.common.lang.ast.MapAstNode;
@@ -15,6 +16,11 @@ import io.github.qishr.cascara.lang.json.ast.JsonScalarNode;
 import io.github.qishr.cascara.lang.json.ast.JsonSequenceNode;
 
 public class JsonConverter implements AstConverter<JsonNode> {
+    @Override
+    public ContentType getContentType() {
+        return JsonParser.contentType;
+    }
+
     public String toText(AstNode ast) {
         JsonNode jsonNode = fromAst(ast);
         JsonEmitter emitter = new JsonEmitter();
