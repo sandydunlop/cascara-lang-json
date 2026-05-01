@@ -1,5 +1,6 @@
 package io.github.qishr.cascara.lang.json.processor;
 
+import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.lang.LanguageOptions;
 import io.github.qishr.cascara.common.lang.processor.Emitter;
@@ -16,6 +17,11 @@ public class JsonEmitter implements Emitter {
     private int indentLevel = 0;
     private JsonOptions options = new JsonOptions();
     private Reporter reporter;
+
+    @Override
+    public ContentType getContentType() {
+        return JsonParser.contentType;
+    }
 
     public String emit(JsonDocument doc) {
         if (doc == null) return "";
