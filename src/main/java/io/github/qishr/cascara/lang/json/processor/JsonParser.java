@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.qishr.cascara.common.content.ContentType;
+import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.lang.LanguageOptions;
 import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
@@ -20,7 +20,7 @@ public class JsonParser implements Parser<JsonDocument, JsonToken> {
     static final ContentType contentType = new ContentType("JSON")
             .withMimeType("text/json")
             .withMimeType("application/json")
-            .withMimeType("application/json+schema")
+            .withMimeType("application/schema+json")
             .withSuffix(".json");
 
     private URI uri;

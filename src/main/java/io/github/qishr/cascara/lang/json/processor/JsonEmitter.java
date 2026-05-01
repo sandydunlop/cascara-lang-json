@@ -1,6 +1,6 @@
 package io.github.qishr.cascara.lang.json.processor;
 
-import io.github.qishr.cascara.common.content.ContentType;
+import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.lang.LanguageOptions;
 import io.github.qishr.cascara.common.lang.processor.Emitter;
