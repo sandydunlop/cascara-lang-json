@@ -4,12 +4,11 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.qishr.cascara.common.diagnostic.Reporter;
+import io.github.qishr.cascara.common.lang.processor.Tokenizer;
 import io.github.qishr.cascara.lang.json.token.JsonToken;
 import io.github.qishr.cascara.lang.json.token.JsonTokenType;
 
-public class JsonTokenizer {
-    private Reporter reporter;
+public class JsonTokenizer extends AbstractJsonProcessor<JsonTokenizer> implements Tokenizer<JsonToken>{
     private String source;
     private List<JsonToken> tokens;
     private URI uri;
@@ -20,10 +19,7 @@ public class JsonTokenizer {
 
     public JsonTokenizer() {}
 
-    public JsonTokenizer setReporter(Reporter reporter) {
-        this.reporter = reporter;
-        return this;
-    }
+    @Override protected JsonTokenizer self() { return this; }
 
     public List<JsonToken> tokenize(String text) {
         return tokenize(text, null);

@@ -12,11 +12,11 @@ import io.github.qishr.cascara.lang.json.ast.JsonNode;
 import io.github.qishr.cascara.lang.json.ast.JsonScalarNode;
 import io.github.qishr.cascara.lang.json.ast.JsonSequenceNode;
 
-public class JsonEmitter implements Emitter {
+public class JsonEmitter extends AbstractJsonProcessor<JsonEmitter>  implements Emitter {
     private final StringBuilder output = new StringBuilder();
     private int indentLevel = 0;
-    private JsonOptions options = new JsonOptions();
-    private Reporter reporter;
+
+    @Override protected JsonEmitter self() { return this; }
 
     @Override
     public ContentType getContentType() {

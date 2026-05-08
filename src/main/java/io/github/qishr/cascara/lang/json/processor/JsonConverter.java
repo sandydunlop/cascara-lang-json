@@ -15,7 +15,9 @@ import io.github.qishr.cascara.lang.json.ast.JsonNode;
 import io.github.qishr.cascara.lang.json.ast.JsonScalarNode;
 import io.github.qishr.cascara.lang.json.ast.JsonSequenceNode;
 
-public class JsonConverter implements AstConverter<JsonNode> {
+public class JsonConverter extends AbstractJsonProcessor<JsonConverter> implements AstConverter<JsonNode> {
+    @Override protected JsonConverter self() { return this; }
+
     @Override
     public ContentType getContentType() {
         return JsonParser.contentType;
