@@ -2,6 +2,8 @@ package io.github.qishr.cascara.lang.json.ast;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,6 +11,7 @@ import java.util.stream.Collectors;
 import io.github.qishr.cascara.common.lang.annotation.Nullable;
 import io.github.qishr.cascara.common.lang.ast.MapAstNode;
 import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
+import io.github.qishr.cascara.common.lang.simple.SimpleMapEntryNode;
 
 public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMapEntryNode> {
     private final List<JsonMapEntryNode> entries = new ArrayList<>();
@@ -55,19 +58,25 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
     }
 
     @Override
-    public Set<JsonNode> keys() {
+    public Set<JsonNode> keySet() {
         return entries.stream().map(JsonMapEntryNode::getKey).collect(Collectors.toSet());
     }
 
     @Override
-    public void put(JsonNode key, JsonNode value) {
+    public Set<JsonMapEntryNode> entrySet() {
+        return new HashSet<JsonMapEntryNode>(entries);
+    }
+
+    @Override
+    public JsonMapNode put(JsonNode key, JsonNode value) {
         for (JsonMapEntryNode entry : entries) {
             if (entry.getKey().equals(key)) {
                 entry.setValue(value);
-                return;
+                return this;
             }
         }
         entries.add(new JsonMapEntryNode(key.getStartLine(), key.getStartColumn(), getOriginUri(), key, value));
+        return this;
     }
 
     @Override
@@ -111,15 +120,16 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
     }
 
     @Override
-    public void put(String key, JsonNode value) {
+    public JsonMapNode put(String key, JsonNode value) {
         for (JsonMapEntryNode entry : entries) {
             if (entry.getKey() instanceof JsonScalarNode scalar && key.equals(scalar.getString())) {
                 entry.setValue(value);
-                return;
+                return this;
             }
         }
         JsonScalarNode keyNode = new JsonScalarNode(0, 0, getOriginUri(), key, key, QuoteStyle.DOUBLE);
         entries.add(new JsonMapEntryNode(0, 0, getOriginUri(), keyNode, value));
+        return this;
     }
 
     public boolean containsKey(String key) {
@@ -129,5 +139,18 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
             }
         }
         return false;
+    }
+
+    /// {@inheritDoc}
+    @Override
+    public Collection<JsonNode> values() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'values'");
+    }
+
+    /// {@inheritDoc}
+    @Override
+    public JsonNode put(String key, String value) {
+        return put(key, new JsonScalarNode(value));
     }
 }
