@@ -109,7 +109,7 @@ public class JsonEmitter extends AbstractJsonProcessor<JsonEmitter>  implements 
             emitSequenceStart();
             int total = seq.size();
             int index = 0;
-            for (JsonNode item : seq.items()) {
+            for (JsonNode item : seq) {
                 emitNode(item);
 
                 if (++index < total) {

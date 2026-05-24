@@ -44,7 +44,7 @@ public class JsonPrettyPrinter {
         indentLevel++;
 
         // API doc: keys() returns Set<K> (which are AstNodes/JsonNodes)
-        var keys = new ArrayList<>(map.keys());
+        var keys = new ArrayList<>(map.keySet());
         for (int i = 0; i < keys.size(); i++) {
             JsonNode keyNode = (JsonNode) keys.get(i);
             // API doc: getEntry takes the Key node, not a String
@@ -74,7 +74,7 @@ public class JsonPrettyPrinter {
         // We track index to handle commas
         int total = seq.size();
         int current = 0;
-        for (JsonNode item : seq.items()) {
+        for (JsonNode item : seq) {
             writeIndent();
             print((JsonNode) item);
 
