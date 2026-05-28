@@ -3,7 +3,7 @@ package io.github.qishr.cascara.lang.json.processor;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.common.diagnostic.SimpleReporter;
 import io.github.qishr.cascara.common.lang.ast.CommentAstNode;
-import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
+import io.github.qishr.cascara.common.lang.QuoteStyle;
 import io.github.qishr.cascara.lang.json.JsonDocument;
 import io.github.qishr.cascara.lang.json.ast.*;
 
