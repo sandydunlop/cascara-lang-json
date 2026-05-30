@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.qishr.cascara.common.lang.QuoteStyle;
+import io.github.qishr.cascara.common.lang.exception.ParserException;
 import io.github.qishr.cascara.common.lang.processor.Parser;
 import io.github.qishr.cascara.lang.json.JsonDocument;
 import io.github.qishr.cascara.lang.json.ast.*;
@@ -271,8 +272,9 @@ public class JsonParser extends AbstractJsonProcessor<JsonParser> implements Par
     }
 
     private void error(JsonToken token, String message) {
-        if (reporter != null) {
-            reporter.errorAt(token, uri, message);
+        reporter.errorAt(token, uri, message);
+        if (!reporter.collectsProblems()) {
+            throw new ParserException(message, token.getStartLine(), token.getStartColumn(), uri);
         }
     }
 }
