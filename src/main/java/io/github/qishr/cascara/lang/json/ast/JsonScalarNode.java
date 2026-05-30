@@ -3,7 +3,7 @@ package io.github.qishr.cascara.lang.json.ast;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
-import io.github.qishr.cascara.common.lang.ast.QuoteStyle;
+import io.github.qishr.cascara.common.lang.QuoteStyle;
 import io.github.qishr.cascara.common.lang.ast.ScalarAstNode;
 
 public class JsonScalarNode extends JsonNode implements ScalarAstNode<JsonNode> {
