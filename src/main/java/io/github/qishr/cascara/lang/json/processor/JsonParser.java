@@ -79,7 +79,7 @@ public class JsonParser extends AbstractJsonProcessor<JsonParser> implements Par
                 case LEFT_BRACE -> parseMap();
                 case LEFT_BRACKET -> parseSequence();
                 case STRING, NUMBER, BOOLEAN, NULL, IDENTIFIER -> parseScalar();
-                default -> new JsonScalarNode(token.getStartLine(), token.getStartColumn(), uri, "", "", null);
+                default -> new JsonScalarNode(uri, token.getStartLine(), token.getStartColumn(), "", "", null);
             };
         } finally {
             depth--;
@@ -110,8 +110,8 @@ public class JsonParser extends AbstractJsonProcessor<JsonParser> implements Par
                             : QuoteStyle.DOUBLE;
 
                     JsonScalarNode key = new JsonScalarNode(
-                            keyTok.getStartLine(), keyTok.getStartColumn(), uri,
-                            keyTok.getLexeme(), (String) keyTok.getValue(), style
+                            uri, keyTok.getStartLine(), keyTok.getStartColumn(),
+                            keyTok.getLexeme(), keyTok.getContent(), style
                         );
                     key.setToken(keyTok);
 
@@ -183,11 +183,11 @@ public class JsonParser extends AbstractJsonProcessor<JsonParser> implements Par
         };
 
         JsonScalarNode scalar = new JsonScalarNode(
+            uri,
             token.getStartLine(),
             token.getStartColumn(),
-            uri,
             token.getLexeme(),
-            (String) token.getValue(),
+            token.getContent(),
             style
         );
 
@@ -208,7 +208,7 @@ public class JsonParser extends AbstractJsonProcessor<JsonParser> implements Par
                     tok.getStartColumn(),
                     uri,
                     tok.getLexeme(),
-                    (String) tok.getValue(),
+                    tok.getContent(),
                     isBlock
                 ));
                 continue;

@@ -42,7 +42,7 @@ class JsonParserTest {
 
         // 3. Verify Comment is on the KEY (High-Fidelity alignment)
         assertFalse(keyNode.getComments().isEmpty(), "Comment should be attached to the KEY node");
-        assertEquals("// This is a comment", keyNode.getComments().get(0).getRawValue());
+        assertEquals("// This is a comment", keyNode.getComments().get(0).getRaw());
     }
 
     @Test

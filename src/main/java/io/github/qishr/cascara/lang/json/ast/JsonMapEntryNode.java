@@ -10,14 +10,14 @@ public class JsonMapEntryNode extends JsonNode implements MapEntryAstNode<JsonNo
     private JsonNode value;
 
     public JsonMapEntryNode(int line, int column, URI uri, JsonNode key, JsonNode value) {
-        super(line, column, uri);
+        super(uri, line, column);
         this.key = key;
         this.value = value;
     }
 
     /// Convenience constructor for programmatic node creation.
     public JsonMapEntryNode(JsonNode key, JsonNode value) {
-        super(0, 0, null);
+        super(null, 0, 0);
         this.key = key;
         this.value = value;
     }
@@ -26,7 +26,7 @@ public class JsonMapEntryNode extends JsonNode implements MapEntryAstNode<JsonNo
 
     @Override public JsonNode getValue() { return value; }
 
-    @Override public void setValue(JsonNode value) {
+    @Override public void setRaw(JsonNode value) {
         this.value = value;
     }
 

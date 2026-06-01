@@ -5,12 +5,12 @@ import io.github.qishr.cascara.common.lang.token.Token;
 public class JsonToken implements Token {
     private JsonTokenType type;
     private String lexeme;
-    private Object value;
+    private String value;
     private int offset;
     private int startLine;
     private int startColumn;
 
-    public JsonToken(JsonTokenType type, String lexeme, Object value, int startIndex, int line, int column) {
+    public JsonToken(JsonTokenType type, String lexeme, String value, int startIndex, int line, int column) {
         this.type = type;
         this.lexeme = lexeme;
         this.value = value;
@@ -31,7 +31,7 @@ public class JsonToken implements Token {
     }
 
     @Override
-    public Object getValue() {
+    public String getContent() {
         return value;
     }
 

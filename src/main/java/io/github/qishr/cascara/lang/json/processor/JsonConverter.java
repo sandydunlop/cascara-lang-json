@@ -58,9 +58,9 @@ public class JsonConverter extends AbstractJsonProcessor<JsonConverter> implemen
             return sequence;
         } else if (ast instanceof ScalarAstNode astScalar) {
             JsonScalarNode scalar = new JsonScalarNode();
-            scalar.setPrimitiveValue(astScalar.getPrimitiveValue());
-            scalar.setValue(astScalar.getString());
-            Object value = scalar.getPrimitiveValue();
+            scalar.setPrimitive(astScalar.getPrimitive());
+            // scalar.setRaw(astScalar.getString());
+            Object value = scalar.getPrimitive();
             if (value == null
                 || value instanceof Integer
                 || value instanceof Double

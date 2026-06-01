@@ -23,10 +23,10 @@ public abstract class JsonNode implements AstNode {
         this.originUri = null;
     }
 
-    protected JsonNode(int line, int column, URI uri) {
+    protected JsonNode(URI uri, int line, int column) {
+        this.originUri = uri;
         this.startLine = line;
         this.startColumn = column;
-        this.originUri = uri;
     }
 
     @Override public abstract List<? extends JsonNode> getChildren();

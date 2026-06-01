@@ -34,8 +34,8 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
     //     this.rawValue = stringValue;
     // }
 
-    //    @Override
-    public String getValue() {
+    // @Override
+    public String getContent() {
         return value != null ? value.toString() : null;
     }
 
@@ -50,7 +50,7 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
     }
 
     @Override
-    public void setValue(String value) {
+    public void setRaw(String value) {
         // Here you can add logic to try and parse the string back
         // into a Boolean or Double if your AST requires typed primitives
         this.value = value;
@@ -67,7 +67,7 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
     }
 
     /// Returns the original raw string as seen in the source file.
-    public String getRawValue() {
+    public String getRaw() {
         return (rawValue != null) ? rawValue : value;
     }
 
@@ -108,12 +108,12 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
     }
 
     @Override
-    public Object getPrimitiveValue() {
+    public Object getPrimitive() {
         return null;
     }
 
     @Override
-    public void setPrimitiveValue(Object value) {
+    public void setPrimitive(Object value) {
         this.value = String.valueOf(value);
     }
 

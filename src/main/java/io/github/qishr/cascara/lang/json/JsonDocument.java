@@ -13,7 +13,7 @@ public class JsonDocument extends JsonNode implements StructuredDocument {
     private URI schemaUri = null;
 
     public JsonDocument(JsonNode root) {
-        super(root.getStartLine(), root.getStartColumn(), root.getOriginUri());
+        super(root.getOriginUri(),root.getStartLine(), root.getStartColumn());
         this.root = root;
     }
 

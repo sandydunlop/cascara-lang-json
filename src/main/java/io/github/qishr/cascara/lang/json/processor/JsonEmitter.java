@@ -42,7 +42,7 @@ public class JsonEmitter extends AbstractJsonProcessor<JsonEmitter>  implements 
     // private void emitNode(JsonNode node) {
     //     if (node instanceof JsonScalarNode scalar) {
     //         // Use getRawValue to preserve the original quoting/formatting
-    //         emitScalar(scalar.getRawValue());
+    //         emitScalar(scalar.getRaw());
     //     } else if (node instanceof JsonMapNode map) {
     //         emitMapStart();
     //         var entries = map.getEntries();
@@ -83,7 +83,7 @@ public class JsonEmitter extends AbstractJsonProcessor<JsonEmitter>  implements 
         // Handle Comments before the node
         if (node.getComments() != null) {
             for (var comment : node.getComments()) {
-                emitScalar(comment.getRawValue());
+                emitScalar(comment.getRaw());
                 emitNewLine();
             }
         }
