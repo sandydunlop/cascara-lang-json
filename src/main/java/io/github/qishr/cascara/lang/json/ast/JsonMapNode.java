@@ -88,7 +88,7 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
     public void remove(String key) {
         entries.removeIf(e -> {
             if (e.getKey() instanceof JsonScalarNode scalar) {
-                return scalar.getString().equals(key);
+                return scalar.asString().equals(key);
             }
             return false;
         });
@@ -101,7 +101,7 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
         if (key == null) return null;
         for (JsonMapEntryNode entry : entries) {
             JsonNode kNode = entry.getKey();
-            String entryKey = (kNode instanceof JsonScalarNode scalar) ? scalar.getString() : kNode.toString();
+            String entryKey = (kNode instanceof JsonScalarNode scalar) ? scalar.asString() : kNode.toString();
             if (key.equals(entryKey)) return entry.getValue();
         }
         return null;
@@ -122,7 +122,7 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
     @Override
     public JsonMapNode put(String key, JsonNode value) {
         for (JsonMapEntryNode entry : entries) {
-            if (entry.getKey() instanceof JsonScalarNode scalar && key.equals(scalar.getString())) {
+            if (entry.getKey() instanceof JsonScalarNode scalar && key.equals(scalar.asString())) {
                 entry.setRaw(value);
                 return this;
             }
@@ -134,7 +134,7 @@ public class JsonMapNode extends JsonNode implements MapAstNode<JsonNode, JsonMa
 
     public boolean containsKey(String key) {
         for (JsonMapEntryNode entry : entries) {
-            if (entry.getKey() instanceof JsonScalarNode scalar && key.equals(scalar.getString())) {
+            if (entry.getKey() instanceof JsonScalarNode scalar && key.equals(scalar.asString())) {
                 return true;
             }
         }

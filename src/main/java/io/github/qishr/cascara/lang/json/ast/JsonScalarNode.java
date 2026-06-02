@@ -47,14 +47,10 @@ public class JsonScalarNode extends JsonNode implements ScalarAstNode<JsonNode> 
         this.quoteStyle = style;
     }
 
+
     @Override
     public String getRaw() {
         return raw;
-    }
-
-    @Override
-    public void setRaw(String newValue) {
-        this.raw = newValue;
     }
 
     @Override
@@ -70,37 +66,37 @@ public class JsonScalarNode extends JsonNode implements ScalarAstNode<JsonNode> 
 
     /// Returns the logical clean text value, stripped of outer formatting and escape markers.
     @Override
-    public String getString() {
+    public String asString() {
         return primitive.asString();
     }
 
     @Override
-    public int getInteger() {
-        return getInteger(0);
+    public int asInteger() {
+        return asInteger(0);
     }
 
     @Override
-    public int getInteger(int defaultValue) {
+    public int asInteger(int defaultValue) {
         return primitive.asInteger(defaultValue);
     }
 
     @Override
-    public double getDouble() {
-        return getDouble(0.0);
+    public double asDouble() {
+        return asDouble(0.0);
     }
 
     @Override
-    public double getDouble(double defaultValue) {
+    public double asDouble(double defaultValue) {
         return primitive.asDouble(defaultValue);
     }
 
     @Override
-    public boolean getBoolean() {
-        return getBoolean(false);
+    public boolean asBoolean() {
+        return asBoolean(false);
     }
 
     @Override
-    public boolean getBoolean(boolean defaultValue) {
+    public boolean asBoolean(boolean defaultValue) {
         return primitive.asBoolean(defaultValue);
     }
 

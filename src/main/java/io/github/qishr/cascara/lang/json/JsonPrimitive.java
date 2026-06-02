@@ -5,8 +5,25 @@ import io.github.qishr.cascara.common.lang.QuoteStyle;
 
 public class JsonPrimitive extends AbstractPrimitive {
 
-    public JsonPrimitive(Object input, QuoteStyle quoteStyle) {
-        super(input, quoteStyle);
+    public JsonPrimitive(Object primitiveValue, QuoteStyle quoteStyle) {
+        this(primitiveValue, quoteStyle, true);
+    }
+
+    public JsonPrimitive(Object primitiveValue) {
+        super(primitiveValue);
+    }
+
+    public static JsonPrimitive fromString(String unescapedContent, QuoteStyle quoteStyle) {
+        return new JsonPrimitive(unescapedContent, quoteStyle, false);
+    }
+
+    private JsonPrimitive(Object input, QuoteStyle quoteStyle, boolean isNative) {
+        super(input, quoteStyle, isNative);
+    }
+
+    @Override
+    protected QuoteStyle inferQuoteStyle(Object value) {
+        return QuoteStyle.DOUBLE;
     }
 
     /// Converts JSON primitive literal values into native Java types.

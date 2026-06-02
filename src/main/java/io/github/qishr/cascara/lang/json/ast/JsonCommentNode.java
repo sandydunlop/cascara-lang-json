@@ -50,13 +50,6 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
     }
 
     @Override
-    public void setRaw(String value) {
-        // Here you can add logic to try and parse the string back
-        // into a Boolean or Double if your AST requires typed primitives
-        this.value = value;
-    }
-
-    @Override
     public List<JsonNode> getChildren() {
         return List.of(); // Scalars never have children
     }
@@ -71,39 +64,33 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
         return (rawValue != null) ? rawValue : value;
     }
 
-
-    // @Override
-    // public String getString() {
-    //     return rawValue;
-    // }
-
     @Override
-    public int getInteger() {
+    public int asInteger() {
         return 0; //TODO:  cascara://projman/CASC-00027711
     }
 
     @Override
-    public int getInteger(int defaultValue) {
+    public int asInteger(int defaultValue) {
         return 0;
     }
 
     @Override
-    public double getDouble() {
+    public double asDouble() {
         return 0;
     }
 
     @Override
-    public double getDouble(double defaultValue) {
+    public double asDouble(double defaultValue) {
         return 0;
     }
 
     @Override
-    public boolean getBoolean() {
+    public boolean asBoolean() {
         return false;
     }
 
     @Override
-    public boolean getBoolean(boolean defaultValue) {
+    public boolean asBoolean(boolean defaultValue) {
         return false;
     }
 
@@ -118,7 +105,7 @@ public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>
     }
 
     @Override
-    public String getString() {
+    public String asString() {
         return value;
     }
 

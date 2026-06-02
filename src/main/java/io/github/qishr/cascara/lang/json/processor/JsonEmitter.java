@@ -121,7 +121,7 @@ public class JsonEmitter extends AbstractJsonProcessor<JsonEmitter>  implements 
     }
 
     private String formatScalar(JsonScalarNode scalar) {
-        String value = scalar.getString();
+        String value = scalar.asString();
         if (value == null) return "null";
 
         return switch (scalar.getQuoteStyle()) {
