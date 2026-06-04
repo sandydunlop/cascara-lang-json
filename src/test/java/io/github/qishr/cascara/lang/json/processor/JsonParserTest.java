@@ -31,14 +31,14 @@ class JsonParserTest {
         JsonMapNode root = (JsonMapNode) doc.getRoot();
 
         // 1. Get the Entry so we can see the Key
-        JsonMapEntryNode entry = root.getEntry(new JsonScalarNode(0, 0, null, "\"port\"", "port", QuoteStyle.DOUBLE));
+        JsonMapEntryNode entry = root.getEntry(new JsonScalarNode(null, 0, 0, "\"port\"", "port", QuoteStyle.DOUBLE));
         assertNotNull(entry, "Entry for 'port' should exist");
 
         JsonNode keyNode = entry.getKey();
         JsonNode valueNode = entry.getValue();
 
         // 2. Verify Value logic still works
-        assertEquals(8080, ((JsonScalarNode) valueNode).getInteger());
+        assertEquals(8080, ((JsonScalarNode) valueNode).asInteger());
 
         // 3. Verify Comment is on the KEY (High-Fidelity alignment)
         assertFalse(keyNode.getComments().isEmpty(), "Comment should be attached to the KEY node");
@@ -54,7 +54,7 @@ class JsonParserTest {
         JsonMapEntryNode entry = root.getEntries().get(0);
         JsonScalarNode keyNode = (JsonScalarNode) entry.getKey();
 
-        assertEquals("user", keyNode.getString());
+        assertEquals("user", keyNode.asString());
         assertEquals(QuoteStyle.PLAIN, keyNode.getQuoteStyle());
     }
 
@@ -103,7 +103,7 @@ class JsonParserTest {
         // In our current logic, it will buffer and attach to "array"
         JsonMapEntryNode arrayEntry = nested.getEntry("array");
         assertFalse(arrayEntry.getKey().getComments().isEmpty());
-        assertEquals(" Inline comment", arrayEntry.getKey().getComments().get(0).getString());
+        assertEquals(" Inline comment", arrayEntry.getKey().getComments().get(0).asString());
 
         // 4. Verify Trailing Comma didn't break the Sequence
         JsonSequenceNode array = (JsonSequenceNode) nested.get("array");
@@ -121,7 +121,7 @@ class JsonParserTest {
         // A single string is a valid JSON document
         JsonDocument doc = parser.parse("\"Hello World\"", testUri);
         assertTrue(doc.getRoot() instanceof JsonScalarNode);
-        assertEquals("Hello World", ((JsonScalarNode)doc.getRoot()).getString());
+        assertEquals("Hello World", ((JsonScalarNode)doc.getRoot()).asString());
     }
 
     @Test
@@ -149,8 +149,8 @@ class JsonParserTest {
         CommentAstNode blockComment = comments.get(1);
 
         // Assuming getText() is on CommentAstNode
-        assertEquals(" This is a line comment", lineComment.getString());
-        assertEquals(" This is a block comment ", blockComment.getString());
+        assertEquals(" This is a line comment", lineComment.asString());
+        assertEquals(" This is a block comment ", blockComment.asString());
 
         // 3. Verify they are actually JsonNodes too
         assertTrue(lineComment instanceof JsonNode);
@@ -198,7 +198,7 @@ class JsonParserTest {
         // The comment starts on Line 1
         assertEquals(1, comment.getStartLine());
         // The text should preserve the internal structure
-        assertTrue(comment.getString().contains("Line 2"));
+        assertTrue(comment.asString().contains("Line 2"));
     }
 
     @Test
@@ -208,7 +208,7 @@ class JsonParserTest {
         JsonDocument doc = parser.parse(input, testUri);
         JsonSequenceNode seq = (JsonSequenceNode) doc.getRoot();
 
-        assertEquals(0.5, ((JsonScalarNode)seq.get(0)).getDouble());
+        assertEquals(0.5, ((JsonScalarNode)seq.get(0)).asDouble());
         // Note: If your current scanNumber doesn't handle 'x',
         // this is where we'll find out!
     }

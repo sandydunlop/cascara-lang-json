@@ -23,10 +23,10 @@ class JsonTokenizerTest {
         // Expected: {, STRING, :, NUMBER, ,, IDENTIFIER, :, BOOLEAN, }, EOF
         assertEquals(10, tokens.size());
         assertEquals(JsonTokenType.LEFT_BRACE, tokens.get(0).getType());
-        assertEquals("key", tokens.get(1).getValue());
-        assertEquals("123", tokens.get(3).getValue());
+        assertEquals("key", tokens.get(1).getContent());
+        assertEquals("123", tokens.get(3).getContent());
         assertEquals(JsonTokenType.IDENTIFIER, tokens.get(5).getType());
-        assertEquals("unquoted", tokens.get(5).getValue());
+        assertEquals("unquoted", tokens.get(5).getContent());
         assertEquals(JsonTokenType.EOF, tokens.get(9).getType());
     }
 
@@ -77,12 +77,12 @@ class JsonTokenizerTest {
         // Lexeme should be the raw source
         assertEquals("// Line comment", tokens.get(0).getLexeme());
         // Value should be JUST the text (failing here)
-        assertEquals(" Line comment", tokens.get(0).getValue(),
+        assertEquals(" Line comment", tokens.get(0).getContent(),
             "Single-line comment value should not include slashes");
 
         // tokens.get(1) is the /* Block comment */
         assertEquals("/* Block\ncomment */", tokens.get(1).getLexeme());
-        assertEquals(" Block\ncomment ", tokens.get(1).getValue(),
+        assertEquals(" Block\ncomment ", tokens.get(1).getContent(),
             "Multi-line comment value should not include /* or */");
     }
 
@@ -98,7 +98,7 @@ class JsonTokenizerTest {
         assertEquals("// Line comment", comment.getLexeme());
 
         // THIS WILL FAIL: expected: [ Line comment] but was: [// Line comment]
-        assertEquals(" Line comment", comment.getValue(),
+        assertEquals(" Line comment", comment.getContent(),
             "The token 'value' should have markers stripped, while 'lexeme' keeps them.");
     }
 }
