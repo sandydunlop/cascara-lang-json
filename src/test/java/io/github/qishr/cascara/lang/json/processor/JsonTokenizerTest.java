@@ -1,6 +1,6 @@
 package io.github.qishr.cascara.lang.json.processor;
 
-import io.github.qishr.cascara.common.diagnostic.SimpleReporter;
+import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
 import io.github.qishr.cascara.lang.json.token.JsonToken;
 import io.github.qishr.cascara.lang.json.token.JsonTokenType;
@@ -12,13 +12,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonTokenizerTest {
-    private final JsonTokenizer tokenizer = new JsonTokenizer().setReporter(new SimpleReporter().setLevel(Level.TRACE));
+    private final JsonTokenizer tokenizer = new JsonTokenizer().setReporter(new StandardReporter().setLevel(Level.TRACE));
     private final URI testUri = URI.create("test://file.json");
 
     @Test
     void testBasicTokens() {
         String input = "{ \"key\": 123, unquoted: true }";
-        List<JsonToken> tokens = tokenizer.tokenize(input, testUri);
+        List<JsonToken> tokens = tokenizer.tokenize(input);
 
         // Expected: {, STRING, :, NUMBER, ,, IDENTIFIER, :, BOOLEAN, }, EOF
         assertEquals(10, tokens.size());
@@ -33,7 +33,7 @@ class JsonTokenizerTest {
     @Test
     void testCoordinates() {
         String input = "\n  \"line2\"";
-        List<JsonToken> tokens = tokenizer.tokenize(input, testUri);
+        List<JsonToken> tokens = tokenizer.tokenize(input);
 
         JsonToken stringTok = tokens.get(0);
         assertEquals(2, stringTok.getStartLine());
@@ -49,7 +49,7 @@ class JsonTokenizerTest {
         String input = "[ +.5, 0x123, 1. ]";
 
         // JsonTokenizer tokenizer = new JsonTokenizer();
-        List<JsonToken> tokens = tokenizer.tokenize(input, URI.create("test://numbers.json"));
+        List<JsonToken> tokens = tokenizer.tokenize(input);
 
         // We expect: [ (LEFT_BRACKET), NUMBER, (COMMA), NUMBER, (COMMA), NUMBER, ] (RIGHT_BRACKET)
 
@@ -71,7 +71,7 @@ class JsonTokenizerTest {
         String input = "// Line comment\n/* Block\ncomment */";
 
         JsonTokenizer tokenizer = new JsonTokenizer();
-        List<JsonToken> tokens = tokenizer.tokenize(input, URI.create("test://comments.json"));
+        List<JsonToken> tokens = tokenizer.tokenize(input);
 
         // tokens.get(0) is the // Line comment
         // Lexeme should be the raw source
@@ -90,7 +90,7 @@ class JsonTokenizerTest {
     void testCommentValueStripping2() {
         String input = "// Line comment";
         JsonTokenizer tokenizer = new JsonTokenizer();
-        List<JsonToken> tokens = tokenizer.tokenize(input, URI.create("test://test.json"));
+        List<JsonToken> tokens = tokenizer.tokenize(input);
 
         JsonToken comment = tokens.get(0);
 

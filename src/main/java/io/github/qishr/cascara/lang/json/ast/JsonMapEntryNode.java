@@ -1,6 +1,5 @@
 package io.github.qishr.cascara.lang.json.ast;
 
-import java.net.URI;
 import java.util.List;
 import io.github.qishr.cascara.common.lang.ast.MapEntryAstNode;
 
@@ -9,15 +8,15 @@ public class JsonMapEntryNode extends JsonNode implements MapEntryAstNode<JsonNo
     private final JsonNode key;
     private JsonNode value;
 
-    public JsonMapEntryNode(int line, int column, URI uri, JsonNode key, JsonNode value) {
-        super(uri, line, column);
+    public JsonMapEntryNode(int line, int column, JsonNode key, JsonNode value) {
+        super(line, column);
         this.key = key;
         this.value = value;
     }
 
     /// Convenience constructor for programmatic node creation.
     public JsonMapEntryNode(JsonNode key, JsonNode value) {
-        super(null, 0, 0);
+        super(0, 0);
         this.key = key;
         this.value = value;
     }

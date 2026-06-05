@@ -1,10 +1,10 @@
 package io.github.qishr.cascara.lang.json.processor;
 
 import io.github.qishr.cascara.common.diagnostic.Diagnostic.Level;
-import io.github.qishr.cascara.common.diagnostic.SimpleReporter;
+import io.github.qishr.cascara.common.diagnostic.SilentErrorTracker;
+import io.github.qishr.cascara.common.diagnostic.StandardReporter;
 import io.github.qishr.cascara.common.lang.ast.CommentAstNode;
 import io.github.qishr.cascara.common.lang.QuoteStyle;
-import io.github.qishr.cascara.lang.json.JsonDocument;
 import io.github.qishr.cascara.lang.json.ast.*;
 
 import org.junit.jupiter.api.Test;
@@ -15,8 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonParserTest {
-    private final JsonParser parser = new JsonParser().setReporter(new SimpleReporter().setLevel(Level.TRACE));;
-    private final URI testUri = URI.create("test://file.json");
+    private final JsonParser parser = new JsonParser().setReporter(new StandardReporter().setLevel(Level.TRACE));;
 
     @Test
     void testParseObjectWithComments() {
@@ -27,11 +26,10 @@ class JsonParserTest {
             }
             """;
 
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonMapNode root = (JsonMapNode) doc.getRoot();
+        JsonMapNode root = (JsonMapNode) parser.parse(input);
 
         // 1. Get the Entry so we can see the Key
-        JsonMapEntryNode entry = root.getEntry(new JsonScalarNode(null, 0, 0, "\"port\"", "port", QuoteStyle.DOUBLE));
+        JsonMapEntryNode entry = root.getEntry(new JsonScalarNode(0, 0, "\"port\"", "port", QuoteStyle.DOUBLE));
         assertNotNull(entry, "Entry for 'port' should exist");
 
         JsonNode keyNode = entry.getKey();
@@ -48,8 +46,7 @@ class JsonParserTest {
     @Test
     void testJson5UnquotedKeys() {
         String input = "{ user: \"admin\" }";
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonMapNode root = (JsonMapNode) doc.getRoot();
+        JsonMapNode root = (JsonMapNode) parser.parse(input);
 
         JsonMapEntryNode entry = root.getEntries().get(0);
         JsonScalarNode keyNode = (JsonScalarNode) entry.getKey();
@@ -61,10 +58,10 @@ class JsonParserTest {
     @Test
     void testNestedSequence() {
         String input = "[1, [2, 3]]";
-        JsonDocument doc = parser.parse(input, testUri);
-        assertTrue(doc.getRoot() instanceof JsonSequenceNode);
+        JsonNode doc = parser.parse(input);
+        assertTrue(doc instanceof JsonSequenceNode);
 
-        JsonSequenceNode root = (JsonSequenceNode) doc.getRoot();
+        JsonSequenceNode root = (JsonSequenceNode) doc;
         assertEquals(2, root.size());
         assertTrue(root.get(1) instanceof JsonSequenceNode);
     }
@@ -84,8 +81,7 @@ class JsonParserTest {
             }
             """;
 
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonMapNode root = (JsonMapNode) doc.getRoot();
+        JsonMapNode root = (JsonMapNode) parser.parse(input);
 
         JsonMapEntryNode unquotedEntry = root.getEntry("unquoted");
         assertFalse(unquotedEntry.getKey().getComments().isEmpty());
@@ -112,16 +108,16 @@ class JsonParserTest {
 
     @Test
     void testEmptyStructures() {
-        assertNotNull(parser.parse("{}", testUri).getRoot());
-        assertNotNull(parser.parse("[]", testUri).getRoot());
+        assertNotNull(parser.parse("{}"));
+        assertNotNull(parser.parse("[]"));
     }
 
     @Test
     void testStandaloneScalar() {
         // A single string is a valid JSON document
-        JsonDocument doc = parser.parse("\"Hello World\"", testUri);
-        assertTrue(doc.getRoot() instanceof JsonScalarNode);
-        assertEquals("Hello World", ((JsonScalarNode)doc.getRoot()).asString());
+        JsonNode doc = parser.parse("\"Hello World\"");
+        assertTrue(doc instanceof JsonScalarNode);
+        assertEquals("Hello World", ((JsonScalarNode)doc).asString());
     }
 
     @Test
@@ -129,16 +125,17 @@ class JsonParserTest {
         // Missing closing brace
         String input = "{ \"key\": \"value\" ";
         // This should not throw an exception, but the Reporter should have errors
-        parser.parse(input, testUri);
+        SilentErrorTracker reporter = new SilentErrorTracker();
+        parser.setReporter(reporter);
+        parser.parse(input);
         // Assuming your reporter has a way to check error counts:
-        // assertTrue(reporter.hasErrors());
+        assertTrue(reporter.hasErrors());
     }
 
     @Test
     void testCommentTextStripping() {
         String input = "// This is a line comment\n/* This is a block comment */ { }";
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonNode root = doc.getRoot();
+        JsonNode root = parser.parse(input);
 
         // 1. Use the interface type for the list
         List<CommentAstNode> comments = root.getComments();
@@ -170,13 +167,11 @@ class JsonParserTest {
             }
             """;
 
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonMapNode root = (JsonMapNode) doc.getRoot();
+        JsonMapNode root = (JsonMapNode) parser.parse(input);
 
         JsonMapNode level1 = root.getMap("level1");
-        JsonMapNode level2 = level1.getMap("level2"); // Wait, level2 is a sequence!
+        JsonMapNode level2 = level1.getMap("level2");
 
-        // This is a great test because it catches if we use the wrong getter
         assertTrue(level1.get("level2") instanceof JsonSequenceNode);
         JsonSequenceNode seq = level1.getSequence("level2");
         assertEquals(2, seq.size());
@@ -190,8 +185,7 @@ class JsonParserTest {
             */
             { "a": 1 }
             """;
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonNode root = doc.getRoot();
+        JsonNode root = parser.parse(input);
 
         CommentAstNode comment = root.getComments().get(0);
 
@@ -205,12 +199,9 @@ class JsonParserTest {
     void testJson5NumericVariations() {
         // JSON5 allows: +.5, -.5, 0x123, 1.
         String input = "[ +.5, 0x123, 1. ]";
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonSequenceNode seq = (JsonSequenceNode) doc.getRoot();
+        JsonSequenceNode seq = (JsonSequenceNode) parser.parse(input);
 
         assertEquals(0.5, ((JsonScalarNode)seq.get(0)).asDouble());
-        // Note: If your current scanNumber doesn't handle 'x',
-        // this is where we'll find out!
     }
 
     @Test
@@ -227,8 +218,7 @@ class JsonParserTest {
             }
             """;
 
-        JsonDocument doc = parser.parse(input, testUri);
-        JsonMapNode root = (JsonMapNode) doc.getRoot();
+        JsonMapNode root = (JsonMapNode) parser.parse(input);
 
         // 1. Check // style
         CommentAstNode lineComment = root.getEntry("a").getKey().getComments().get(0);

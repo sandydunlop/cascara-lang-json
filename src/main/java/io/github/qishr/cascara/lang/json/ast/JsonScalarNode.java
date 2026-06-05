@@ -1,6 +1,5 @@
 package io.github.qishr.cascara.lang.json.ast;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,22 +12,43 @@ public class JsonScalarNode extends JsonNode implements ScalarAstNode<JsonNode> 
     private JsonPrimitive primitive;
     private QuoteStyle quoteStyle = QuoteStyle.PLAIN;
 
-    public JsonScalarNode(URI uri, int line, int column, String raw, String unescapedContent, QuoteStyle quoteStyle) {
-        super(uri, line, column);
+    /// Constructor for use in parsers.
+    /// Used when reading raw text from a file stream.
+    /// Takes a String and triggers full lexical dialect type inference.
+    public JsonScalarNode(int line, int column, String raw, String unescapedContent, QuoteStyle quoteStyle) {
+        super(line, column);
         this.raw = raw;
-        this.primitive = new JsonPrimitive(unescapedContent, quoteStyle);
+        // fromString treats the input as text content to be parsed
+        this.primitive = JsonPrimitive.fromString(unescapedContent, quoteStyle);
         this.quoteStyle = quoteStyle;
     }
 
-    public JsonScalarNode(String stringValue) {
-        super(null, 0, 0);
-        this.raw = stringValue;
-        this.primitive = new JsonPrimitive(stringValue, QuoteStyle.PLAIN);
+    /// A programmatic and serializer constructor.
+    /// Used when building an AST dynamically in code.
+    /// Takes a pre-typed Object and skips text-based type inference.
+    public JsonScalarNode(Object primitiveValue, QuoteStyle quoteStyle) {
+        super(0, 0);
+        this.raw = null; // Cleared cache marks it as dirty for the emitter
+        // Pass the object directly into the primitive wrapper
+        this.primitive = new JsonPrimitive(primitiveValue, quoteStyle);
+        this.quoteStyle = quoteStyle;
     }
 
+    /// A programmatic and serializer constructor.
+    /// Used when building an AST dynamically in code.
+    /// Takes a pre-typed Object and skips text-based type inference.
+    public JsonScalarNode(Object primitiveValue) {
+        super(0, 0);
+        this.raw = null; // Cleared cache marks it as dirty for the emitter
+        this.primitive = new JsonPrimitive(primitiveValue);
+        this.quoteStyle = primitive.getQuoteStyle();
+    }
+
+    /// The default constructor
     public JsonScalarNode() {
-        super(null, 0, 0);
+        super(0, 0);
         this.raw = null;
+        this.quoteStyle = QuoteStyle.PLAIN;
         this.primitive = new JsonPrimitive(null, QuoteStyle.PLAIN);
     }
 

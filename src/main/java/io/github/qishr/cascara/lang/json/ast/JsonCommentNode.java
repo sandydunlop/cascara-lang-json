@@ -10,29 +10,13 @@ import java.util.List;
 public class JsonCommentNode extends JsonNode implements ScalarAstNode<JsonNode>, CommentAstNode {
     private String value;
     private String rawValue;
-    private QuoteStyle quoteStyle;
     private final boolean multiLine;
-
-    // public JsonCommentNode() {}
 
     public JsonCommentNode(int line, int column, URI uri, String rawValue, String stringValue, boolean multiLine) {
         this.value = stringValue;
         this.rawValue = rawValue;
         this.multiLine = multiLine;
     }
-
-    // public JsonCommentNode(int line, int column, URI uri, String rawValue, String stringValue, QuoteStyle quoteStyle) {
-    //     super(line, column, uri);
-    //     this.rawValue = rawValue;
-    //     this.value = stringValue;
-    //     this.quoteStyle = quoteStyle;
-    //     this.multiLine = false;
-    // }
-
-    // public JsonCommentNode(String stringValue) {
-    //     this.value = stringValue;
-    //     this.rawValue = stringValue;
-    // }
 
     // @Override
     public String getContent() {

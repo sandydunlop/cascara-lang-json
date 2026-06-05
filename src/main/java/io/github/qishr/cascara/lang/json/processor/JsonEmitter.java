@@ -4,7 +4,6 @@ import io.github.qishr.cascara.common.util.ContentType;
 import io.github.qishr.cascara.common.diagnostic.Reporter;
 import io.github.qishr.cascara.common.lang.LanguageOptions;
 import io.github.qishr.cascara.common.lang.processor.Emitter;
-import io.github.qishr.cascara.lang.json.JsonDocument;
 import io.github.qishr.cascara.lang.json.JsonOptions;
 import io.github.qishr.cascara.lang.json.ast.JsonMapEntryNode;
 import io.github.qishr.cascara.lang.json.ast.JsonMapNode;
@@ -23,55 +22,11 @@ public class JsonEmitter extends AbstractJsonProcessor<JsonEmitter>  implements 
         return JsonParser.contentType;
     }
 
-    public String emit(JsonDocument doc) {
-        if (doc == null) return "";
-        output.setLength(0);
-        if (doc.getRoot() != null) {
-            emitNode(doc.getRoot());
-        }
-        return output.toString();
-    }
-
     public String emit(JsonNode root) {
-        if (root instanceof JsonDocument doc) return emit(doc);
         output.setLength(0);
         emitNode(root);
         return output.toString();
     }
-
-    // private void emitNode(JsonNode node) {
-    //     if (node instanceof JsonScalarNode scalar) {
-    //         // Use getRawValue to preserve the original quoting/formatting
-    //         emitScalar(scalar.getRaw());
-    //     } else if (node instanceof JsonMapNode map) {
-    //         emitMapStart();
-    //         var entries = map.getEntries();
-    //         for (int i = 0; i < entries.size(); i++) {
-    //             JsonMapEntryNode entry = (JsonMapEntryNode) entries.get(i);
-
-    //             emitNode(entry.getKey());
-    //             emitPropertySeparator();
-    //             emitNode(entry.getValue());
-
-    //             if (i < entries.size() - 1) {
-    //                 emitItemSeparator();
-    //             }
-    //         }
-    //         emitMapEnd();
-    //     } else if (node instanceof JsonSequenceNode seq) {
-    //         emitSequenceStart();
-    //         int total = seq.size();
-    //         int index = 0;
-    //         for (JsonNode item : seq.items()) {
-    //             emitNode(item);
-
-    //             if (++index < total) {
-    //                 emitItemSeparator();
-    //             }
-    //         }
-    //         emitSequenceEnd();
-    //     }
-    // }
 
     @Override
     public void emitScalar(String value) {

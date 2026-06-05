@@ -13,6 +13,7 @@ public class JsonPrimitive extends AbstractPrimitive {
         super(primitiveValue);
     }
 
+    /// Parses unescaped text and infers its type.
     public static JsonPrimitive fromString(String unescapedContent, QuoteStyle quoteStyle) {
         return new JsonPrimitive(unescapedContent, quoteStyle, false);
     }
@@ -23,7 +24,12 @@ public class JsonPrimitive extends AbstractPrimitive {
 
     @Override
     protected QuoteStyle inferQuoteStyle(Object value) {
-        return QuoteStyle.DOUBLE;
+        QuoteStyle style = QuoteStyle.PLAIN;
+        if (value instanceof CharSequence || value instanceof Character) {
+
+            style = QuoteStyle.DOUBLE;
+        }
+        return style;
     }
 
     /// Converts JSON primitive literal values into native Java types.
